@@ -2,6 +2,10 @@
 __pycache__/
 *.py[codz]
 *$py.class
+*.tmp
+
+mal-anime-covers-error.txt
+mal-manga-covers-error.txt
 
 # C extensions
 *.so
