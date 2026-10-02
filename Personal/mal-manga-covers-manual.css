@@ -1,0 +1,28 @@
+/*
+============================================================
+ Better Kessenzu's MyAnimeList Manga Covers
+ Manually Updated Covers
+============================================================
+*/
+
+/* Koi to Sakura to Toshishita no Kimi
+   MAL ID: 97035
+*/
+.data.image .link[href*="/manga/97035/"] {
+    background-image: url("ADD-MANUAL-COVER-URL-HERE") !important;
+}
+
+/* Monogatari Series: Family Season
+   MAL ID: 159958
+*/
+.data.image .link[href*="/manga/159958/"] {
+    background-image: url("ADD-MANUAL-COVER-URL-HERE") !important;
+}
+
+/* Monogatari Series: Monster Season
+   MAL ID: 108177
+*/
+.data.image .link[href*="/manga/108177/"] {
+    background-image: url("ADD-MANUAL-COVER-URL-HERE") !important;
+}
+

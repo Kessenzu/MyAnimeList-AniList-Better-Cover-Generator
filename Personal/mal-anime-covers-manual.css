@@ -1,0 +1,21 @@
+/*
+============================================================
+ Better Kessenzu's MyAnimeList Anime Covers
+ Manually Updated Covers
+============================================================
+*/
+
+/* Fate/stay night TV Reproduction
+   MAL ID: 7559
+*/
+.data.image .link[href*="/anime/7559/"] {
+    background-image: url("ADD-MANUAL-COVER-URL-HERE") !important;
+}
+
+/* Guilty Crown: Kiseki - Reassortment
+   MAL ID: 12419
+*/
+.data.image .link[href*="/anime/12419/"] {
+    background-image: url("ADD-MANUAL-COVER-URL-HERE") !important;
+}
+
