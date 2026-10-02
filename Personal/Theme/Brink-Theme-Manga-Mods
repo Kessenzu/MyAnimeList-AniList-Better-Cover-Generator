@@ -1,0 +1,961 @@
+/*==============================================================*/
+/*                          Brink Mods                          */
+/*                         by Kessenzu                          */
+/*==============================================================*/
+
+
+/*==============================================================*/
+/*                         THEME COLOR                          */
+/*==============================================================*/
+
+:root { --modAccent: 324, 49%, 46%; }
+
+
+/*==============================================================*/
+/*                          BACKGROUND                          */
+/*==============================================================*/
+
+:root {
+	/* Background image
+	   url("LINK") = on
+	   none        = off */
+	--modBackground: url("https://w0.peakpx.com/wallpaper/978/906/HD-wallpaper-anime-original-cherry-blossom-sakura-street.jpg");
+
+	/* Background effects */
+	--modBackgroundBlur: 10px;
+	--modBackgroundBrightness: 55%;
+
+	/* Header effects */
+	--modHeaderBlur: 14px;
+	--modHeaderDarkness: 72%;
+
+	/* Scrolled menu effects */
+	--modScrolledMenuDarkness: 96%;
+}
+
+
+/*==============================================================*/
+/*                       BACKGROUND LAYER                       */
+/*==============================================================*/
+
+body.ownlist {
+	position: relative;
+	isolation: isolate;
+
+	background-color:
+		hsl(var(--bg)) !important;
+
+	background-image:
+		none !important;
+}
+
+body.ownlist:before {
+	content: "";
+
+	position: fixed;
+	inset: -32px;
+	z-index: -1;
+
+	background-image:
+		var(--modBackground);
+
+	background-position:
+		center center;
+
+	background-size:
+		cover;
+
+	background-repeat:
+		no-repeat;
+
+	filter:
+		blur(var(--modBackgroundBlur))
+		brightness(var(--modBackgroundBrightness));
+
+	transform:
+		scale(1.04);
+
+	pointer-events:
+		none;
+}
+
+
+/*==============================================================*/
+/*                       LIST BACKGROUND                        */
+/*==============================================================*/
+
+#list-container,
+.list-block {
+	background-color:
+		transparent !important;
+
+	background-image:
+		none !important;
+}
+
+.list-block {
+	min-height:
+		calc(100vh - 42px) !important;
+}
+
+
+/*==============================================================*/
+/*                   BACKGROUND-AWARE HEADER                    */
+/*==============================================================*/
+
+.header {
+	background:
+		hsla(var(--bg), var(--modHeaderDarkness)) !important;
+
+	-webkit-backdrop-filter:
+		blur(var(--modHeaderBlur));
+
+	backdrop-filter:
+		blur(var(--modHeaderBlur));
+}
+
+
+/*==============================================================*/
+/*                        SCROLLED MENU                         */
+/*==============================================================*/
+
+/*
+ * The Brink menu is 62px tall.
+ * Normal state:
+ *   17px padding + 42px menu = 59px
+ *
+ * Fixed state:
+ *    5px padding + 42px menu = 47px
+ */
+
+/* Base overlay */
+#status-menu:after {
+	background:
+		linear-gradient(
+			to bottom,
+			hsla(var(--bg), var(--modScrolledMenuDarkness)) 0,
+			hsla(var(--bg), var(--modScrolledMenuDarkness)) 59px,
+			transparent 62px
+		) !important;
+
+	opacity: 0;
+
+	-webkit-backdrop-filter:
+		none !important;
+
+	backdrop-filter:
+		none !important;
+
+	pointer-events:
+		none;
+}
+
+/* Brink fixed-state fallback */
+#status-menu.fixed:after {
+	background:
+		linear-gradient(
+			to bottom,
+			hsla(var(--bg), var(--modScrolledMenuDarkness)) 0,
+			hsla(var(--bg), var(--modScrolledMenuDarkness)) 47px,
+			transparent 62px
+		) !important;
+
+	opacity:
+		1 !important;
+}
+
+
+/*==============================================================*/
+/*                  INSTANT SCROLL ACTIVATION                   */
+/*==============================================================*/
+
+/*
+ * Modern browsers:
+ * activate the visual overlay almost immediately
+ * after scrolling begins.
+ */
+@supports (animation-timeline: scroll()) {
+
+	#status-menu:after {
+		animation:
+			modScrolledMenuOn linear both;
+
+		animation-timeline:
+			scroll(root block);
+
+		animation-range:
+			1px 3px;
+	}
+
+	@keyframes modScrolledMenuOn {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+}
+
+
+/*==============================================================*/
+/*                   SCROLLED HEADER CONTENT                    */
+/*==============================================================*/
+
+/* MAL logo */
+#status-menu .status-menu:before {
+	content: "";
+
+	position: fixed;
+	top: 0;
+	left: 42px;
+	z-index: 10;
+
+	display: block;
+
+	width: 44px;
+	height: 42px;
+
+	background-color:
+		hsl(var(--modAccent));
+
+	-webkit-mask:
+		url("https://files.catbox.moe/8q5kjg.svg")
+		left center / auto 20px no-repeat;
+
+	mask:
+		url("https://files.catbox.moe/8q5kjg.svg")
+		left center / auto 20px no-repeat;
+
+	opacity: 0;
+
+	pointer-events:
+		none;
+}
+
+
+/* List label */
+#status-menu .status-menu:after {
+	content: "Viewing Your Manga List";
+
+	position: fixed;
+	top: 0;
+	right: 12px;
+	z-index: 10;
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+
+	width: auto;
+	height: 42px;
+
+	color:
+		hsla(var(--text), 0.75);
+
+	font:
+		normal 14px/1 var(--font);
+
+	text-align:
+		right;
+
+	white-space:
+		nowrap;
+
+	opacity: 0;
+
+	pointer-events:
+		none;
+}
+
+/* Brink fixed-state fallback */
+#status-menu.fixed .status-menu:before,
+#status-menu.fixed .status-menu:after {
+	opacity:
+		1 !important;
+}
+
+
+/*==============================================================*/
+/*                  INSTANT HEADER ACTIVATION                   */
+/*==============================================================*/
+
+@supports (animation-timeline: scroll()) {
+
+	#status-menu .status-menu:before,
+	#status-menu .status-menu:after {
+		animation:
+			modScrolledHeaderOn linear both;
+
+		animation-timeline:
+			scroll(root block);
+
+		animation-range:
+			1px 3px;
+	}
+
+	@keyframes modScrolledHeaderOn {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+}
+
+/*==============================================================*/
+/*                         MOD ACCENTS                          */
+/*==============================================================*/
+
+#status-menu .status-button.watching:before {
+	content: "AIRING" !important;
+}
+
+#status-menu .status-button:hover:before,
+#status-menu .status-button.on:before {
+	color: hsl(var(--modAccent)) !important;
+}
+
+#status-menu .status-button.on:before {
+	font-weight: 700 !important;
+}
+
+#status-menu:before {
+	background:
+		linear-gradient(
+			to right,
+			hsla(var(--modAccent), 1),
+			hsla(var(--modAccent), 0.55)
+		)
+		hsl(var(--bg)) !important;
+}
+
+
+/*==============================================================*/
+/*                   ACTIVE STATUS UNDERLINE                    */
+/*==============================================================*/
+
+#status-menu .status-button {
+	position: relative;
+}
+
+#status-menu .status-button:after {
+	content: "" !important;
+
+	position: absolute;
+	left: 50%;
+	bottom: 1px;
+
+	width: 26px;
+	height: 2px;
+
+	background: hsl(var(--modAccent));
+	border-radius: 2px;
+
+	opacity: 0;
+	transform:
+		translateX(-50%)
+		scaleX(0);
+
+	transform-origin: center;
+
+	transition:
+		opacity 160ms ease,
+		transform 180ms cubic-bezier(.2, .7, .2, 1) !important;
+}
+
+#status-menu .status-button:not(.on):hover:after {
+	opacity: 0.42;
+	transform:
+		translateX(-50%)
+		scaleX(0.55);
+}
+
+#status-menu .status-button.on:after {
+	opacity: 1;
+	animation:
+		statusUnderlineIn 240ms cubic-bezier(.2, .7, .2, 1) both;
+}
+
+@keyframes statusUnderlineIn {
+	from {
+		transform:
+			translateX(-50%)
+			scaleX(0);
+	}
+
+	to {
+		transform:
+			translateX(-50%)
+			scaleX(1);
+	}
+}
+
+
+/*==============================================================*/
+/*                      PERFORMANCE TWEAKS                      */
+/*==============================================================*/
+
+.list-block {
+	background-attachment: scroll !important;
+}
+
+.more-content {
+	-webkit-backdrop-filter: none !important;
+	backdrop-filter: none !important;
+}
+
+.list-item:hover .data.image .link {
+	filter:
+		brightness(var(--imageBrightnessHov))
+		opacity(var(--imageBrightnessHov)) !important;
+}
+
+
+/*==============================================================*/
+/*                       HEADER CONTROLS                        */
+/*==============================================================*/
+
+.list-unit .list-status-title .stats a,
+.list-table > tbody:first-of-type:before,
+#status-menu .search-container #search-box {
+	background: hsla(var(--text), 0.025) !important;
+	border: none !important;
+	border-radius: 4px !important;
+	box-shadow:
+		inset 0 -1px 0 hsla(var(--text), 0.10) !important;
+
+	color: hsla(var(--text), 0.82) !important;
+
+	transition:
+		background-color 160ms ease,
+		color 160ms ease,
+		box-shadow 160ms ease !important;
+}
+
+.list-unit .list-status-title .stats a:first-child {
+	display: none !important;
+}
+
+.list-unit .list-status-title .stats a:not(:first-child),
+.list-table > tbody:first-of-type:before {
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+
+	padding: 0 !important;
+	line-height: 1 !important;
+}
+
+.list-unit .list-status-title .stats a:not(:first-child):hover,
+.list-table > tbody:first-of-type:hover:before {
+	background: hsla(var(--modAccent), 0.055) !important;
+	color: hsl(var(--modAccent)) !important;
+
+	box-shadow:
+		inset 0 -2px 0 hsl(var(--modAccent)) !important;
+}
+
+#status-menu .search-container #search-box:hover,
+#status-menu .search-container #search-box:focus-within {
+	background: hsla(var(--modAccent), 0.045) !important;
+
+	box-shadow:
+		inset 0 -2px 0 hsl(var(--modAccent)),
+		0 4px 10px hsla(var(--modAccent), 0.08) !important;
+}
+
+#status-menu .search-container #search-box input {
+	background: transparent !important;
+	color: hsl(var(--text)) !important;
+}
+
+#status-menu .search-container #search-box input::placeholder {
+	color: hsla(var(--text), 0.38) !important;
+}
+
+#status-menu .search-container #search-box:after {
+	color: hsla(var(--text), 0.68) !important;
+
+	transition:
+		color 160ms ease !important;
+}
+
+#status-menu .search-container #search-box:hover:after,
+#status-menu .search-container #search-box:focus-within:after {
+	color: hsl(var(--modAccent)) !important;
+}
+
+
+/*==============================================================*/
+/*                          CARD BASE                           */
+/*==============================================================*/
+
+.list-item {
+	content-visibility: auto;
+	contain-intrinsic-size: 210px 300px;
+
+	zoom: 0.8;
+	opacity: 0.94;
+	transform: scale(0.95);
+
+	transition:
+		transform 180ms cubic-bezier(.2, .7, .2, 1),
+		opacity 180ms ease !important;
+}
+
+.list-item:hover {
+	z-index: 5;
+	opacity: 1;
+
+	transform:
+		translateY(-4px)
+		scale(1);
+}
+
+
+/*==============================================================*/
+/*                         CARD VISUALS                         */
+/*==============================================================*/
+
+.data.image,
+.more-info {
+	border-radius: var(--cardRadius) !important;
+}
+
+.data.title {
+	border-radius:
+		0 0
+		var(--cardRadius)
+		var(--cardRadius) !important;
+}
+
+.more-content {
+	border-radius:
+		var(--cardRadius)
+		var(--cardRadius)
+		0 0 !important;
+}
+
+.data.image .link:before {
+	background:
+		linear-gradient(
+			to top,
+			hsla(var(--bg), 0.95) 0%,
+			hsla(var(--bg), 0.72) 20%,
+			hsla(var(--bg), 0.32) 42%,
+			hsla(var(--bg), 0.08) 58%,
+			transparent 70%
+		) !important;
+}
+
+.data.image {
+	transition:
+		box-shadow 180ms cubic-bezier(.2, .7, .2, 1) !important;
+}
+
+.list-item:hover .data.image {
+	box-shadow:
+		0 8px 18px hsla(0, 0%, 0%, 0.42),
+		0 0 0 1px hsla(var(--modAccent), 0.12) !important;
+}
+
+
+/*==============================================================*/
+/*                          CARD TEXT                           */
+/*==============================================================*/
+
+.data.title .link {
+	display: -webkit-box !important;
+
+	max-height: 43px !important;
+	overflow: hidden !important;
+
+	font-size: 15px !important;
+	font-weight: 700 !important;
+	line-height: 19px !important;
+
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+}
+
+.data.score,
+.data.score .link,
+.data.score .link:before,
+.data .score-na:before {
+	font-size: 14px !important;
+	font-weight: 400 !important;
+}
+
+.data.progress,
+.data.chapter,
+.data.volume,
+.data.progress a,
+.data.chapter a,
+.data.volume a,
+.progress span:nth-of-type(2),
+.chapter span:nth-of-type(2),
+.volume span:nth-of-type(2) {
+	font-size: 14px !important;
+	font-weight: 400 !important;
+}
+
+.data.number,
+:nth-child(2):not(.number) ~ .data.type {
+	top: 16px !important;
+	font-size: 15px !important;
+	font-weight: 700 !important;
+}
+
+.data.number:before {
+	font-size: 13px !important;
+}
+
+
+/*==============================================================*/
+/*                       TOP RATED HEADER                       */
+/*==============================================================*/
+
+.data .score-8:before,
+.data .score-9:before,
+.data .score-10:before {
+	content: "" !important;
+
+	position: absolute !important;
+	left: -12px !important;
+	bottom: 274px !important;
+	z-index: 20 !important;
+
+	width: 210px !important;
+	height: 14px !important;
+
+	background:
+		linear-gradient(
+			90deg,
+			hsla(var(--rated), 0.58) 0%,
+			hsla(var(--rated), 0.82) 24%,
+			hsla(var(--rated), 0.96) 50%,
+			hsla(var(--rated), 0.82) 76%,
+			hsla(var(--rated), 0.58) 100%
+		) !important;
+
+	border: 0 !important;
+	border-radius:
+		var(--cardRadius)
+		var(--cardRadius)
+		0 0 !important;
+
+	box-shadow:
+		inset 0 1px 0 hsla(0, 0%, 100%, 0.16),
+		0 2px 4px hsla(var(--rated), 0.18) !important;
+
+	visibility: var(--toggle) !important;
+	pointer-events: none !important;
+}
+
+.data .score-8:after,
+.data .score-9:after,
+.data .score-10:after {
+	content: "TOP RATED" !important;
+
+	position: absolute !important;
+	left: -12px !important;
+	bottom: 274px !important;
+	z-index: 21 !important;
+
+	display: block !important;
+
+	width: 210px !important;
+	height: 14px !important;
+	min-width: 0 !important;
+	padding: 0 !important;
+
+	background: transparent !important;
+	border: 0 !important;
+	border-radius:
+		var(--cardRadius)
+		var(--cardRadius)
+		0 0 !important;
+
+	box-shadow: none !important;
+
+	color: hsl(var(--bg)) !important;
+	font: 700 10px/14px var(--font) !important;
+	letter-spacing: 0.8px !important;
+	text-align: center !important;
+
+	transform: none !important;
+
+	visibility: var(--toggle) !important;
+	pointer-events: none !important;
+}
+
+
+/*==============================================================*/
+/*                      CARD STATUS LABEL                       */
+/*==============================================================*/
+
+.content-status,
+.rewatching,
+.rereading {
+	left: 15px !important;
+	bottom: 225px !important;
+	z-index: 11 !important;
+
+	height: 17px !important;
+
+	font-size: 14px !important;
+	font-weight: 700 !important;
+	line-height: 17px !important;
+	letter-spacing: 1.4px !important;
+}
+
+
+/*==============================================================*/
+/*                    HIDE STREAMING BUTTON                     */
+/*==============================================================*/
+
+.malicon,
+div[class^="icon-watch"] {
+	display: none !important;
+}
+
+
+/*==============================================================*/
+/*                        MOD SCROLLBAR                         */
+/*==============================================================*/
+
+* {
+	scrollbar-color:
+		hsl(var(--modAccent))
+		hsl(var(--bgAlt));
+
+	scrollbar-width: thin;
+}
+
+.list-item * {
+	scrollbar-color:
+		hsl(var(--modAccent))
+		transparent;
+}
+
+*::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color:
+		hsla(var(--modAccent), 0.62) !important;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+	background-color:
+		hsl(var(--modAccent)) !important;
+}
+
+
+/*==============================================================*/
+/*                       ORDER MENU STYLE                       */
+/*==============================================================*/
+
+.list-table > tbody:first-of-type:hover:after {
+	content: "" !important;
+
+	position: absolute !important;
+	top: 0 !important;
+	left: -12px !important;
+
+	display: block !important;
+
+	width: calc(100% + 24px) !important;
+	height: 58px !important;
+
+	background: transparent !important;
+	border: 0 !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+
+	pointer-events: auto !important;
+}
+
+.list-table .list-table-header {
+	padding: 4px 0 !important;
+
+	background:
+		hsla(var(--bgAlt), 0.98) !important;
+
+	border:
+		1px solid hsla(var(--text), 0.08) !important;
+
+	border-radius: 4px !important;
+
+	box-shadow:
+		0 10px 24px hsla(0, 0%, 0%, 0.34) !important;
+}
+
+.list-table .list-table-header .header-title a {
+	height: 32px !important;
+	padding: 0 10px !important;
+
+	background: transparent !important;
+
+	border: 0 !important;
+	border-left:
+		2px solid transparent !important;
+
+	color:
+		hsla(var(--text), 0.76) !important;
+
+	line-height: 32px !important;
+
+	box-shadow:
+		inset 0 -1px 0 hsla(var(--text), 0.055);
+
+	transition:
+		background-color 140ms ease,
+		border-color 140ms ease,
+		color 140ms ease !important;
+}
+
+.list-table .list-table-header .header-title:last-child a {
+	box-shadow: none;
+}
+
+.list-table .list-table-header .header-title a:hover {
+	background:
+		hsla(var(--modAccent), 0.08) !important;
+
+	border-left-color:
+		hsl(var(--modAccent)) !important;
+
+	color:
+		hsl(var(--modAccent)) !important;
+
+	line-height: 32px !important;
+}
+
+.list-table .list-table-header .header-title .sort-icon {
+	color:
+		hsl(var(--modAccent)) !important;
+}
+
+
+/*==============================================================*/
+/*                     FILTER MENU ACCENTS                      */
+/*==============================================================*/
+
+#advanced-options .sort-widget :not(:disabled) + label:hover,
+#advanced-options .sort-widget :not(:disabled):checked + label,
+#advanced-options .advanced-options-button a:hover {
+	border-color:
+		hsl(var(--modAccent)) !important;
+
+	color:
+		hsl(var(--modAccent)) !important;
+}
+
+#advanced-options:before,
+.mal-modal-content:before {
+	background:
+		linear-gradient(
+			to right,
+			hsla(var(--modAccent), 1),
+			hsla(var(--modAccent), 0.45)
+		)
+		hsl(var(--bg)) !important;
+}
+
+
+/*==============================================================*/
+/*                       USER MENU HOVER                        */
+/*==============================================================*/
+
+.ownlist .list-menu-float .icon-menu:hover:after,
+.ownlist .list-menu-float .icon-menu:not(.setting):hover .text,
+.ownlist .list-menu-float .icon-menu.setting .text .link-list-setting:hover,
+.ownlist .list-menu-float .icon-menu.setting .text .link-style-setting:hover {
+	border-color:
+		hsl(var(--modAccent)) !important;
+
+	color:
+		hsl(var(--modAccent)) !important;
+}
+
+
+/*==============================================================*/
+/*                    USER MENU HEADER HOVER                    */
+/*==============================================================*/
+
+.list-menu-float:after {
+	background-image: none !important;
+	background-color: hsl(var(--text)) !important;
+
+	-webkit-mask:
+		url("https://files.catbox.moe/0tnlh6.svg")
+		center / auto no-repeat !important;
+
+	mask:
+		url("https://files.catbox.moe/0tnlh6.svg")
+		center / auto no-repeat !important;
+}
+
+.list-menu-float:hover:after {
+	background-color:
+		hsl(var(--modAccent)) !important;
+}
+
+.list-menu-float:hover:before {
+	color:
+		hsl(var(--modAccent)) !important;
+}
+
+
+/*==============================================================*/
+/*                        MAL LOGO HOVER                        */
+/*==============================================================*/
+
+.header .header-title {
+	background-image: none !important;
+	background-color: hsl(var(--text)) !important;
+
+	-webkit-mask:
+		url("https://files.catbox.moe/8q5kjg.svg")
+		left 4px / auto 20px no-repeat !important;
+
+	mask:
+		url("https://files.catbox.moe/8q5kjg.svg")
+		left 4px / auto 20px no-repeat !important;
+
+	opacity: 0.94 !important;
+
+	transition:
+		background-color var(--timeButton) var(--bezierFast),
+		opacity var(--timeButton) var(--bezierFast) !important;
+}
+
+.header .header-title:hover {
+	background-color:
+		hsl(var(--modAccent)) !important;
+
+	opacity: 1 !important;
+}
+
+
+/*==============================================================*/
+/*                            FOOTER                            */
+/*==============================================================*/
+
+#copyright:hover {
+	color:
+		hsl(var(--modAccent)) !important;
+}
+
+#copyright:after {
+	content:
+		"List design by Valerio Lyndon. Design mods by Kessenzu.";
+}
