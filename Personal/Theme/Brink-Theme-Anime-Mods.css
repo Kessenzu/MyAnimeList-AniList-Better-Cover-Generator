@@ -269,15 +269,6 @@ body.ownlist:before {
 		none;
 }
 
-
-/* Manga list */
-body:has(#header-menu-dropdown .icon-menu.anime-list)
-#status-menu .status-menu:after {
-	content:
-		"Viewing Your Manga List";
-}
-
-
 /* Brink fixed-state fallback */
 #status-menu.fixed .status-menu:before,
 #status-menu.fixed .status-menu:after {
