@@ -33,18 +33,6 @@ This Python script reads your MyAnimeList anime and/or manga list, matches entri
 - A MyAnimeList API Client ID
 - Internet connection
 
-Install the required Python package with:
-
-```bash
-pip install -r requirements.txt
-```
-
-or:
-
-```bash
-pip install requests
-```
-
 ---
 
 ## MyAnimeList API Setup
@@ -233,8 +221,6 @@ Generated MyAnimeList CSS
 
 The script sends your MyAnimeList Client ID using the API request headers.
 
-Your Client Secret is not required by the generator.
-
 ---
 
 ### Troubleshooting MyAnimeList API Access
@@ -274,3 +260,264 @@ Never publish:
 - other private credentials
 
 ---
+
+## Generated Files
+
+The generator creates separate files for Anime and Manga.
+
+### Anime
+
+```text
+mal-anime-covers.css
+mal-anime-covers-error.txt
+mal-anime-covers-manual.css
+```
+
+### Manga
+
+```text
+mal-manga-covers.css
+mal-manga-covers-error.txt
+mal-manga-covers-manual.css
+```
+
+### File Purpose
+
+#### Automatic CSS
+
+`mal-anime-covers.css` and `mal-manga-covers.css`
+
+These are the automatically generated cover files.
+
+They contain successful AniList cover matches and can be used directly in your MyAnimeList custom CSS.
+
+Example:
+
+```css
+/* Example Anime
+   MAL ID: 12345
+*/
+.data.image .link[href*="/anime/12345/"] {
+    background-image: url("https://s4.anilist.co/...") !important;
+}
+```
+
+#### Error Logs
+
+`mal-anime-covers-error.txt` and `mal-manga-covers-error.txt`
+
+These files contain entries that could not be matched successfully or did not have an available AniList cover.
+
+Example:
+
+```text
+MAL ID: 12345 | Title: Example Title | Error: No AniList match
+```
+
+Error log entries are not automatically removed.
+
+If an entry fails during one run but later becomes available from AniList, the old error entry may remain in the error log.
+
+This is expected behavior.
+
+#### Manual CSS
+
+`mal-anime-covers-manual.css` and `mal-manga-covers-manual.css`
+
+These files contain optional manual cover templates for failed entries.
+
+They are only created or updated if manual template generation is enabled.
+
+See the **Manual Cover Editing** section below for instructions on adding your own cover URLs.
+
+---
+
+## Resume Behavior
+
+The generator checks the existing automatic CSS file before requesting covers from AniList.
+
+If a MAL ID is already present in:
+
+```text
+mal-anime-covers.css
+```
+
+or:
+
+```text
+mal-manga-covers.css
+```
+
+that entry is skipped.
+
+This means the generator can be stopped and restarted without downloading already completed entries again.
+
+Successful covers are saved during processing, so previously completed work is preserved if the program is interrupted.
+
+---
+
+## Using the CSS on MyAnimeList
+
+The generated CSS files are designed to be used with MyAnimeList custom list CSS.
+
+You can either copy the generated CSS directly into your list style or host the CSS file somewhere accessible and import it.
+
+### Automatic Covers
+
+For Anime:
+
+```css
+@import url("YOUR-AUTOMATIC-ANIME-CSS-URL");
+```
+
+For Manga:
+
+```css
+@import url("YOUR-AUTOMATIC-MANGA-CSS-URL");
+```
+
+### Manual Overrides
+
+If you use manual cover overrides, import the manual CSS after the automatic CSS.
+
+Anime example:
+
+```css
+@import url("YOUR-AUTOMATIC-ANIME-CSS-URL");
+@import url("YOUR-MANUAL-ANIME-CSS-URL");
+```
+
+Manga example:
+
+```css
+@import url("YOUR-AUTOMATIC-MANGA-CSS-URL");
+@import url("YOUR-MANUAL-MANGA-CSS-URL");
+```
+
+The manual CSS should come after the automatic CSS so your manually selected covers can override automatically generated covers when necessary.
+
+---
+
+## Hosting the Generated CSS
+
+The generated CSS must be available through a direct public URL if you want to use it with `@import`.
+
+You can host the files using GitHub together with a compatible CDN or another service that serves raw CSS files.
+
+For example, if you keep your generated files in a public GitHub repository, you can use a CDN URL that points to the CSS file.
+
+Make sure the URL returns the actual CSS content and not an HTML webpage.
+
+---
+
+## Manual Cover Editing
+
+If manual cover template generation is enabled, failed entries are added to the corresponding manual CSS file.
+
+Example:
+
+```css
+/* Example Anime
+   MAL ID: 12345
+*/
+.data.image .link[href*="/anime/12345/"] {
+    background-image: url("ADD-MANUAL-COVER-URL-HERE") !important;
+}
+```
+
+For manga, the generated selector uses `/manga/` instead of `/anime/`.
+
+Replace:
+
+```text
+ADD-MANUAL-COVER-URL-HERE
+```
+
+with your own direct image URL.
+
+Example:
+
+```css
+background-image: url("https://example.com/my-cover.jpg") !important;
+```
+
+Do not remove the MAL ID comment if you want the generator to continue recognizing that entry as already present in the manual CSS.
+
+Existing manual entries are not overwritten automatically.
+
+If you have already replaced the placeholder with your own image URL, the generator preserves that manual entry.
+
+Manual placeholder entries are not automatically removed if the same title later becomes available through AniList.
+
+This is expected behavior.
+
+---
+
+## Personal Directory
+
+This repository contains a `personal/` directory.
+
+The files inside this directory are used by the repository owner for their own MyAnimeList lists.
+
+They may include:
+
+- generated anime cover CSS
+- generated manga cover CSS
+- manual cover overrides
+- list-specific CSS
+- other personal MyAnimeList customizations
+
+These files are not required to use the generator.
+
+The `personal/` directory is included so the repository owner can keep their own list files in the same repository without mixing them with the reusable public generator.
+
+If you only want to use the generator yourself, you can ignore the entire `personal/` directory.
+
+---
+
+## Repository Structure
+
+```text
+MyAnimeList-AniList-Better-Cover-Generator/
+│
+├── .gitignore
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── MyAnimeList-AniList-Better-Cover-Generator.py
+│
+└── personal/
+    ├── README.md
+    ├── mal-anime-covers.css
+    ├── mal-anime-covers-manual.css
+    ├── mal-manga-covers.css
+    └── mal-manga-covers-manual.css
+```
+
+The main generator is:
+
+```text
+MyAnimeList-AniList-Better-Cover-Generator.py
+```
+
+Files inside the `personal/` directory are repository-owner-specific and are not required for normal use.
+
+---
+
+## Notes
+
+This is an unofficial community project.
+
+It is not affiliated with, endorsed by, or maintained by MyAnimeList or AniList.
+
+MyAnimeList and AniList are separate services with their own APIs, availability, terms, and rate limits.
+
+API behavior may change over time.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
+
+See the `LICENSE` file for details.
