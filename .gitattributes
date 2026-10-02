@@ -1,1 +1,5 @@
+Personal linguist-vendored export-ignore
 Personal/** linguist-vendored export-ignore
+
+.gitignore export-ignore
+.gitattributes export-ignore
