@@ -10,7 +10,6 @@
 
 :root { --modAccent: 324, 49%, 46%; }
 
-
 /*==============================================================*/
 /*                         TYPOGRAPHY                            */
 /*==============================================================*/
@@ -34,6 +33,7 @@
         "FontAwesome",
         sans-serif;
 }
+
 
 
 /*==============================================================*/
@@ -515,8 +515,10 @@ body.ownlist:before {
 }
 
 
+/*==============================================================*/
+/*                 FILTER / ORDER / SEARCH FONT                 */
+/*==============================================================*/
 
-/* Control typography */
 .list-unit .list-status-title .stats a,
 #status-menu .search-container #search-box,
 #status-menu .search-container #search-box input {
@@ -529,6 +531,7 @@ body.ownlist:before {
     font-weight: 400 !important;
     letter-spacing: 0 !important;
 }
+
 
 /* Order */
 .list-table > tbody:first-of-type:before {
@@ -544,6 +547,7 @@ body.ownlist:before {
     letter-spacing: 0 !important;
 }
 
+
 /* Filter icon */
 .list-unit .list-status-title .stats a i,
 .list-unit .list-status-title .stats a .fa {
@@ -554,6 +558,7 @@ body.ownlist:before {
     font-size: 12px !important;
     margin-right: 6px !important;
 }
+
 
 /* Search icon */
 #status-menu .search-container #search-box:after {
@@ -570,25 +575,26 @@ body.ownlist:before {
 /*==============================================================*/
 
 .list-item {
-	content-visibility: auto;
-	contain-intrinsic-size: 210px 300px;
+    content-visibility: auto;
+    contain-intrinsic-size: 210px 300px;
 
-	zoom: 0.8;
-	opacity: 0.94;
-	transform: none;
+    zoom: 0.8;
+    opacity: 0.94;
 
-	transition:
-		transform 180ms cubic-bezier(.2, .7, .2, 1),
-		opacity 180ms ease !important;
+    transform: none;
+
+    transition:
+        transform 180ms cubic-bezier(.2, .7, .2, 1),
+        opacity 180ms ease !important;
 }
 
 .list-item:hover {
-	z-index: 5;
-	opacity: 1;
+    z-index: 5;
+    opacity: 1;
 
-	transform:
-		translateY(-4px)
-		scale(1);
+    transform:
+        translateY(-4px)
+        scale(1.025);
 }
 
 
@@ -628,14 +634,55 @@ body.ownlist:before {
 }
 
 .data.image {
-	transition:
-		box-shadow 180ms cubic-bezier(.2, .7, .2, 1) !important;
+    border: none !important;
+
+    box-shadow:
+        0 2px 7px hsla(0, 0%, 0%, 0.16) !important;
+
+    transition:
+        box-shadow 180ms cubic-bezier(.2, .7, .2, 1) !important;
 }
 
 .list-item:hover .data.image {
-	box-shadow:
-		0 8px 18px hsla(0, 0%, 0%, 0.42),
-		0 0 0 1px hsla(var(--modAccent), 0.12) !important;
+    box-shadow:
+        0 8px 18px hsla(0, 0%, 0%, 0.42) !important;
+}
+
+
+/*==============================================================*/
+/*                       COVER HOVER FRAME                      */
+/*==============================================================*/
+
+.data.image::after {
+    content: "";
+
+    position: absolute;
+    inset: -1px;
+    z-index: 5;
+
+    border:
+        2.5px solid hsl(var(--modAccent));
+
+    border-radius:
+        var(--cardRadius);
+
+    box-shadow:
+        0 0 12px hsla(var(--modAccent), 0.22);
+
+    opacity: 0;
+
+    transform:
+        translateY(0.5px);
+
+    pointer-events: none;
+
+    transition:
+        opacity 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.list-item:hover .data.image::after {
+    opacity: 1;
 }
 
 
