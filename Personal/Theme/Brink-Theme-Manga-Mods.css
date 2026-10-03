@@ -12,6 +12,31 @@
 
 
 /*==============================================================*/
+/*                         TYPOGRAPHY                            */
+/*==============================================================*/
+
+@font-face {
+    font-family: "RobotoMod";
+    src:
+        url("https://cdn.jsdelivr.net/npm/@fontsource/roboto/files/roboto-latin-wght-normal.woff2")
+        format("woff2");
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+:root {
+    --font:
+        "RobotoMod",
+        "Segoe UI",
+        "Arial",
+        "FontAwesome 4",
+        "FontAwesome",
+        sans-serif;
+}
+
+
+/*==============================================================*/
 /*                          BACKGROUND                          */
 /*==============================================================*/
 
@@ -490,6 +515,56 @@ body.ownlist:before {
 }
 
 
+
+/* Control typography */
+.list-unit .list-status-title .stats a,
+#status-menu .search-container #search-box,
+#status-menu .search-container #search-box input {
+    font-family:
+        "RobotoMod",
+        "Segoe UI",
+        sans-serif !important;
+
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    letter-spacing: 0 !important;
+}
+
+/* Order */
+.list-table > tbody:first-of-type:before {
+    font-family:
+        "FontAwesome 4",
+        "RobotoMod",
+        "Segoe UI",
+        sans-serif !important;
+
+    font-size: 13.5px !important;
+    font-weight: 400 !important;
+    line-height: 1 !important;
+    letter-spacing: 0 !important;
+}
+
+/* Filter icon */
+.list-unit .list-status-title .stats a i,
+.list-unit .list-status-title .stats a .fa {
+    font-family:
+        "FontAwesome 4",
+        "FontAwesome" !important;
+
+    font-size: 12px !important;
+    margin-right: 6px !important;
+}
+
+/* Search icon */
+#status-menu .search-container #search-box:after {
+    font-family:
+        "FontAwesome 4",
+        "FontAwesome" !important;
+
+    font-size: 13px !important;
+}
+
+
 /*==============================================================*/
 /*                          CARD BASE                           */
 /*==============================================================*/
@@ -500,7 +575,7 @@ body.ownlist:before {
 
 	zoom: 0.8;
 	opacity: 0.94;
-	transform: scale(0.95);
+	transform: none;
 
 	transition:
 		transform 180ms cubic-bezier(.2, .7, .2, 1),
